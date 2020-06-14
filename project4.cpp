@@ -207,4 +207,213 @@ int main()
 					rob[current][0] = inputall[current].substr(0, p);
 					inputall[current] = inputall[current].substr(p + 1, inputall[current].length());
 					for (int i = 1 ; i < 3; ++i) {
-	
+						p = inputall[current].find(",", 0);
+						add[currentA][i] = inputall[current].substr(0, p);
+						inputall[current] = inputall[current].substr(p + 1, inputall[current].length());
+					}
+					add[currentA][3] = "ROB" + intToStr(current);
+					rob[current][1] = "0";
+					++emptyA;
+
+					for (int i = 1; i < 3; ++i) {
+						if (add[currentA][i].find("F", 0) != add[currentA][i].npos) {
+							if (!rat[stringToInt(add[currentA][i])].empty())
+								add[currentA][i] = rat[stringToInt(add[currentA][i])];
+							else
+								add[currentA][i] = intToStr(rf[stringToInt(add[currentA][i])]);
+						}
+						else
+							add[currentA][i] = add[currentA][i];
+					}
+					rat[stringToInt(rob[current][0])] = "ROB" + intToStr(current);
+					issue = true;
+					change = true;
+					currentA++;
+				}
+			}
+
+			else if (inputall[current].find("SUB", 0) != inputall[current].npos) {
+				if (emptyA < 3) {
+					p = inputall[current].find(" ", 0);
+					add[currentA][0] = "-";
+					inputall[current] = inputall[current].substr(p + 1, inputall[current].length());
+					p = inputall[current].find(",", 0);
+					rob[current][0] = inputall[current].substr(0, p);
+					inputall[current] = inputall[current].substr(p + 1, inputall[current].length());
+					for (int i = 1; i < 3; ++i) {
+						p = inputall[current].find(",", 0);
+						add[currentA][i] = inputall[current].substr(0, p);
+						inputall[current] = inputall[current].substr(p + 1, inputall[current].length());
+					}
+					add[currentA][3] = "ROB" + intToStr(current);
+					rob[current][1] = "0";
+					for (int i = 1; i < 3; ++i) {
+						if (add[currentA][i].find("F", 0) != add[currentA][i].npos) {
+							if (!rat[stringToInt(add[currentA][i])].empty())
+								add[currentA][i] = rat[stringToInt(add[currentA][i])];
+							else
+								add[currentA][i] = intToStr(rf[stringToInt(add[currentA][i])]);
+						}
+						else
+							add[currentA][i] = add[currentA][i];
+					}
+					rat[stringToInt(rob[current][0])] = "ROB" + intToStr(current);
+					++emptyA;
+					issue = true;
+					change = true;
+					currentA++;
+				}
+			}
+			else if (inputall[current].find("MUL", 0) != inputall[current].npos) {
+				if (emptyM < 2) {
+					p = inputall[current].find(" ", 0);
+					mul[currentM][0] = "*";
+					inputall[current] = inputall[current].substr(p + 1, inputall[current].length());
+					p = inputall[current].find(",", 0);
+					rob[current][0] = inputall[current].substr(0, p);
+					inputall[current] = inputall[current].substr(p + 1, inputall[current].length());
+					for (int i = 1; i < 3; ++i) {
+						p = inputall[current].find(",", 0);
+						mul[currentM][i] = inputall[current].substr(0, p);
+						inputall[current] = inputall[current].substr(p + 1, inputall[current].length());
+					}
+					mul[currentM][3] = "ROB" + intToStr(current);
+					rob[current][1] = "0";
+					for (int i = 1; i < 3; ++i) {
+						if (mul[currentM][i].find("F", 0) != mul[currentM][i].npos) {
+							if (!rat[stringToInt(mul[currentM][i])].empty())
+								mul[currentM][i] = rat[stringToInt(mul[currentM][i])];
+							else
+								mul[currentM][i] = intToStr(rf[stringToInt(mul[currentM][i])]);
+						}
+						else
+							mul[currentM][i] = mul[currentM][i];
+					}
+					rat[stringToInt(rob[current][0])] = "ROB" + intToStr(current);
+					++emptyM;
+					issue = true;
+					change = true;
+					currentM++;
+				}
+			}
+			else if (inputall[current].find("DIV", 0) != inputall[current].npos) {
+				if (emptyM < 2) {
+					p = inputall[current].find(" ", 0);
+					mul[currentM][0] = "/";
+					inputall[current] = inputall[current].substr(p + 1, inputall[current].length());
+					p = inputall[current].find(",", 0);
+					rob[current][0] = inputall[current].substr(0, p);
+					inputall[current] = inputall[current].substr(p + 1, inputall[current].length());
+					for (int i = 1; i < 3; ++i) {
+						p = inputall[current].find(",", 0);
+						mul[currentM][i] = inputall[current].substr(0, p);
+						inputall[current] = inputall[current].substr(p + 1, inputall[current].length());
+					}
+					mul[currentM][3] = "ROB" + intToStr(current);
+					rob[current][1] = "0";
+					for (int i = 1; i < 3; ++i) {
+						if (mul[currentA][i].find("F", 0) != mul[currentA][i].npos) {
+							if (!rat[stringToInt(mul[currentA][i])].empty())
+								mul[currentA][i] = rat[stringToInt(mul[currentA][i])];
+							else
+								mul[currentA][i] = intToStr(rf[stringToInt(mul[currentA][i])]);
+						}
+						else
+							mul[currentA][i] = mul[currentA][i];
+					}
+					rat[stringToInt(rob[current][0])] = "ROB" + intToStr(current);
+					++emptyM;
+					issue = true;
+					change = true;
+					currentM++;
+				}
+			}
+		}//issue
+		if ((rob[currentRob][2] == "1") || !(current < inputall.size() || emptyA || emptyM || countAdd || countMul)) {
+			rf[stringToInt(rob[currentRob][0])] = stringToDou(rob[currentRob][1]);
+			for (int i = 0; i < 3; ++i) {
+				if (stringToInt(add[i][1]) == currentRob)
+					add[i][1] = rob[currentRob][1];
+				if (stringToInt(add[i][2]) == currentRob)
+					add[i][2] = rob[currentRob][1];
+				if (i < 2) {
+					if (stringToInt(mul[i][1]) == currentRob)
+						mul[i][1] = rob[currentRob][1];
+					if (stringToInt(mul[i][2]) == currentRob)
+						mul[i][2] = rob[currentRob][1];
+				}
+			}
+			currentRob++;
+			change = true;
+		}//renew RF
+		if (countAdd > 0)
+			countAdd--;
+		if (countMul > 0)
+			countMul--;
+		if (aluA == 2) {
+			for (int i = 0; i < 3; ++i) {
+				if (bufferA[1] == add[i][3]) {
+					for (int j = 0; j < 4; ++j) {
+						add[i][j] = "";
+					}
+					currentA = i;
+					emptyA--;
+					break;
+				}
+			}
+			aluA = 0;
+			change = true;
+		}//clear RS
+		else if (aluM == 2) {
+			for (int i = 0; i < 2; ++i) {
+				if (bufferM[1] == mul[i][3]) {
+					for (int j = 0; j < 4; ++j) {
+						mul[i][j] = "";
+					}
+					currentM = i;
+					emptyM--;
+					break;
+				}
+			}
+			aluM = 0;
+			change = true;
+		}//clear RS
+		++cycle;
+		if (issue)
+			current++;
+		if (change) {
+			cout << "Cycle¡G" << cycle << endl;
+			cout << " _RF_____________________" << endl;
+			for (int i = 1; i < 6; ++i)
+				cout << " |   " << "F" << i << " |   " << setw(10) << rf[i] << "  |" << endl;
+			cout << "--------------------------" << endl << " _RAT____________________" << endl;
+			for (int i = 1; i < 6; ++i)
+				cout << " |   " << "F" << i << " |   " << setw(10) << rat[i] << "  |" << endl;
+			cout << "-------------------------" << endl << " _RS____________________________________________________" << endl;
+			for (int i = 0; i < 3; ++i)
+				cout << " |   " << "RS" << i << " |   " << setw(10) << add[i][0] << "  |  " << setw(10) << add[i][1] << "  |  " << setw(10) << add[i][2] << "  |  " << endl;
+			cout << "--------------------------------------------------------" << endl;
+			cout << "BUFFER:";
+			if (countAdd != 0)
+				cout << "(" << bufferA[1] << ")" << bufferA[3] << bufferA[2] << bufferA[4] << endl << endl;
+			else
+				cout << "empty" << endl << endl;
+			cout << " _RS____________________________________________________" << endl;
+			for (int i = 0; i < 2; ++i)
+				cout << " |   " << "RS" << i << " |   " << setw(10) << mul[i][0] << "  |  " << setw(10) << mul[i][1] << "  |  " << setw(10) << mul[i][2] << "  |  " << endl;
+			cout << "--------------------------------------------------------" << endl;
+			cout << "BUFFER:";
+
+			if (countMul != 0)
+				cout << "(" << bufferM[1] << ")" << bufferM[3] << bufferM[2] << bufferM[4] << endl << endl;
+			else
+				cout << "empty" << endl << endl;
+			cout << " _ROB_________________________________________________________" << endl;
+			for (int i = 0; i < inputall.size(); ++i) {
+				cout << " |   " << "ROB" << i << " |   " << setw(10) << rob[i][0] << setw(10) << "  |  " << setw(10) << rob[i][1] << "  |  " << setw(10) << rob[i][2] << "  |  " << endl;
+			}
+			cout << "--------------------------------------------------------------" << endl;
+			cout << endl << endl;
+		}
+	} while (current < inputall.size() || emptyA || emptyM || countAdd || countMul || currentRob < inputall.size());
+}
