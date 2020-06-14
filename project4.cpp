@@ -60,8 +60,14 @@ int main()
 	rf[0] = 0;
 	string input;
 	int p, pc;
-	getline(cin, input);
 	bool push = true;
+	getline(cin, input);
+	int current = 0;
+	int currentA = 0, currentM = 0, currentRob = 0;
+	int cycle = 0;
+	int countAdd = 0, countMul = 0;
+	string bufferA[5] , bufferM[5];//value,ROB,op,rs1,rs2存計算結果值
+	bool issue,change ;
 	while (input[0] != cin.eof()) {
 		push = true;
 		p = input.find("//", 0); //解決註解
@@ -79,12 +85,7 @@ int main()
 	rob = new string * [inputall.size()];
 	for (int i = 0; i < inputall.size(); ++i)
 		rob[i] = new string[3];
-	int current = 0;
-	int currentA = 0, currentM = 0, currentRob = 0;
-	int cycle = 0;
-	int countAdd = 0, countMul = 0;
-	string bufferA[5] , bufferM[5];//value,ROB,op,rs1,rs2存計算結果值
-	bool issue,change ;
+	
 	do{
 		issue = false;
 		change = false;
