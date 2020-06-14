@@ -270,3 +270,274 @@ if (countAdd == 0 && emptyA != 0 && aluA == 0) {
       if (mul[i][j].find("/", 0) == mul[i][j].npos)//*
       {
        countMul = mulCycle + 1;
+	          bufferM[0] = intToStr(stringToDou(mul[i][1]) * stringToDou(mul[i][2]));
+       bufferM[1] = mul[i][3];
+       bufferM[2] = "*";
+       bufferM[3] = mul[i][1];
+       bufferM[4] = mul[i][2];
+       aluM = 1;
+       change = true;
+       break;
+      }
+      else {
+       countMul = divCycle + 1;
+       bufferM[0] = intToStr(stringToDou(mul[i][1]) / stringToDou(mul[i][2]));
+       bufferM[1] = mul[i][3];
+       bufferM[2] = "/";
+       bufferM[3] = mul[i][1];
+       bufferM[4] = mul[i][2];
+       aluM = 1;
+       change = true;
+       break;
+      }
+
+     }
+    }
+   }
+   
+  }//dispatch
+```
+> 如果 ALU為空，且所需之 data 皆齊全，做 dispatch。  
+暫存計算結果進對應 buffer中，直至跑完對應 cycle 數始作後續動作。  
+
+```cpp
+   if (current < inputall.size()) {
+   if (inputall[current].find("ADD", 0) != inputall[current].npos) {
+    if (emptyA < 3) {
+     p = inputall[current].find(" ", 0);
+     add[currentA][0] = "+";
+     inputall[current] = inputall[current].substr(p + 1, inputall[current].length());
+     p = inputall[current].find(",", 0);
+     rob[current][0] = inputall[current].substr(0, p);
+     inputall[current] = inputall[current].substr(p + 1, inputall[current].length());
+     for (int i = 1 ; i < 3; ++i) {
+      p = inputall[current].find(",", 0);
+      add[currentA][i] = inputall[current].substr(0, p);
+      inputall[current] = inputall[current].substr(p + 1, inputall[current].length());
+     }
+     add[currentA][3] = "ROB" + intToStr(current);
+     rob[current][1] = "0";
+     ++emptyA;
+
+     for (int i = 1; i < 3; ++i) {
+      if (add[currentA][i].find("F", 0) != add[currentA][i].npos) {
+       if (!rat[stringToInt(add[currentA][i])].empty())
+        add[currentA][i] = rat[stringToInt(add[currentA][i])];
+       else
+        add[currentA][i] = intToStr(rf[stringToInt(add[currentA][i])]);
+      }
+      else
+       add[currentA][i] = add[currentA][i];
+     }
+     rat[stringToInt(rob[current][0])] = "ROB" + intToStr(current);
+     issue = true;
+     change = true;
+     currentA++;
+    }
+   }
+
+   else if (inputall[current].find("SUB", 0) != inputall[current].npos) {
+    if (emptyA < 3) {
+     p = inputall[current].find(" ", 0);
+     add[currentA][0] = "-";
+     inputall[current] = inputall[current].substr(p + 1, inputall[current].length());
+     p = inputall[current].find(",", 0);
+     rob[current][0] = inputall[current].substr(0, p);
+     inputall[current] = inputall[current].substr(p + 1, inputall[current].length());
+     for (int i = 1; i < 3; ++i) {
+      p = inputall[current].find(",", 0);
+      add[currentA][i] = inputall[current].substr(0, p);
+      inputall[current] = inputall[current].substr(p + 1, inputall[current].length());
+     }
+     add[currentA][3] = "ROB" + intToStr(current);
+     rob[current][1] = "0";
+     for (int i = 1; i < 3; ++i) {
+      if (add[currentA][i].find("F", 0) != add[currentA][i].npos) {
+       if (!rat[stringToInt(add[currentA][i])].empty())
+        add[currentA][i] = rat[stringToInt(add[currentA][i])];
+       else
+        add[currentA][i] = intToStr(rf[stringToInt(add[currentA][i])]);
+      }
+      else
+       add[currentA][i] = add[currentA][i];
+     }
+     rat[stringToInt(rob[current][0])] = "ROB" + intToStr(current);
+     ++emptyA;
+     issue = true;
+     change = true;
+     currentA++;
+    }
+   }
+   else if (inputall[current].find("MUL", 0) != inputall[current].npos) {
+    if (emptyM < 2) {
+     p = inputall[current].find(" ", 0);
+     mul[currentM][0] = "*";
+     inputall[current] = inputall[current].substr(p + 1, inputall[current].length());
+     p = inputall[current].find(",", 0);
+     rob[current][0] = inputall[current].substr(0, p);
+     inputall[current] = inputall[current].substr(p + 1, inputall[current].length());
+     for (int i = 1; i < 3; ++i) {
+      p = inputall[current].find(",", 0);
+      mul[currentM][i] = inputall[current].substr(0, p);
+      inputall[current] = inputall[current].substr(p + 1, inputall[current].length());
+     }
+     mul[currentM][3] = "ROB" + intToStr(current);
+     rob[current][1] = "0";
+     for (int i = 1; i < 3; ++i) {
+      if (mul[currentM][i].find("F", 0) != mul[currentM][i].npos) {
+       if (!rat[stringToInt(mul[currentM][i])].empty())
+        mul[currentM][i] = rat[stringToInt(mul[currentM][i])];
+       else
+        mul[currentM][i] = intToStr(rf[stringToInt(mul[currentM][i])]);
+      }
+      else
+       mul[currentM][i] = mul[currentM][i];
+     }
+     rat[stringToInt(rob[current][0])] = "ROB" + intToStr(current);
+     ++emptyM;
+     issue = true;
+     change = true;
+     currentM++;
+    }
+   }
+   else if (inputall[current].find("DIV", 0) != inputall[current].npos) {
+    if (emptyM < 2) {
+     p = inputall[current].find(" ", 0);
+     mul[currentM][0] = "/";
+     inputall[current] = inputall[current].substr(p + 1, inputall[current].length());
+     p = inputall[current].find(",", 0);
+     rob[current][0] = inputall[current].substr(0, p);
+     inputall[current] = inputall[current].substr(p + 1, inputall[current].length());
+     for (int i = 1; i < 3; ++i) {
+      p = inputall[current].find(",", 0);
+      mul[currentM][i] = inputall[current].substr(0, p);
+      inputall[current] = inputall[current].substr(p + 1, inputall[current].length());
+     }
+     mul[currentM][3] = "ROB" + intToStr(current);
+     rob[current][1] = "0";
+     for (int i = 1; i < 3; ++i) {
+      if (mul[currentA][i].find("F", 0) != mul[currentA][i].npos) {
+       if (!rat[stringToInt(mul[currentA][i])].empty())
+        mul[currentA][i] = rat[stringToInt(mul[currentA][i])];
+       else
+        mul[currentA][i] = intToStr(rf[stringToInt(mul[currentA][i])]);
+      }
+      else
+       mul[currentA][i] = mul[currentA][i];
+     }
+     rat[stringToInt(rob[current][0])] = "ROB" + intToStr(current);
+     ++emptyM;
+     issue = true;
+     change = true;
+     currentM++;
+    }
+   }
+  }//issue
+```  
+>  當對應 RS有空位，則將 current指向的 instruction放入該空位中。  
+檢查該 instruction所需之 data 是否被記錄在 RAT中;如果有以紀錄之  ROB替代，反之，則尋找相對 RF之值。   
+```cpp
+if ((rob[currentRob][2] == "1")||!(current < inputall.size() || emptyA 
+    || emptyM || countAdd || countMul)) {
+	rf[stringToInt(rob[currentRob][0])] = stringToDou(rob[currentRob][1]);
+	for (int i = 0; i < 3; ++i) {
+		if (stringToInt(add[i][1]) == currentRob) 
+			add[i][1] = rob[currentRob][1];
+		if (stringToInt(add[i][2]) == currentRob) 
+			add[i][2] = rob[currentRob][1];
+		if (i < 2) {
+			if (stringToInt(mul[i][1]) == currentRob)
+				mul[i][1] = rob[currentRob][1];
+				if (stringToInt(mul[i][2]) == currentRob)
+					mul[i][2] = rob[currentRob][1];
+		}
+	}
+	currentRob++;	
+	change = true;
+}//renew RF
+```  
+> 在對應 cycle時，將計算完成的值更新到 RF中。   
+
+```cpp
+	if (countAdd > 0)
+		countAdd--;
+	if (countMul > 0)
+		countMul--;
+	if (aluA == 2) {
+		for (int i = 0; i < 3; ++i) {
+			if (bufferA[1] == add[i][3]) {
+				for (int j = 0; j < 4; ++j) {
+					add[i][j] = "";
+				}
+				currentA = i;
+				emptyA--;
+				break;
+			}
+		}
+		aluA = 0;
+		change = true;
+	}//clear RS
+	else if (aluM == 2) {
+		for (int i = 0; i < 2; ++i) {
+			if (bufferM[1] == mul[i][3]) {
+				for (int j = 0; j < 4; ++j) {
+					mul[i][j] = "";
+				}
+				currentM = i;
+				emptyM--;
+				break;
+			}
+		}
+		aluM = 0;
+		change = true;
+	}//clear RS
+	++cycle;
+	if(issue)
+		current++;
+```
+> 如 ALU中有正在執行的 instruction，舊更新其對應的 cycle time。  
+當完成計算後，將對應的 RS清空。  
+```cpp
+    if (change) {
+	   cout << "Cycle：" << cycle << endl;
+    	cout << " _RF_____________________" << endl;
+    	for (int i = 1; i < 6; ++i)
+        	cout << " |   " << "F" << i << " |   " << setw(10) <<rf[i] << "  |" << endl;
+    	    cout << "--------------------------" << endl << " _RAT____________________" << endl;
+		    for (int i = 1; i < 6; ++i)
+			    cout << " |   "  <<"F" << i << " |   " << setw(10) << rat[i] << "  |" << endl;
+		    cout << "-------------------------" << endl << " _RS____________________________________________________" << endl;
+		    for (int i = 0; i < 3; ++i)
+			    cout << " |   " << "RS" << i << " |   " << setw(10) << add[i][0] << "  |  " << setw(10) << add[i][1] << "  |  " << setw(10) << add[i][2] << "  |  " << endl;
+		    	cout << "--------------------------------------------------------" << endl;
+		    cout << "BUFFER:";
+	    	if (countAdd != 0)
+		    	cout << "(" << bufferA[1] << ")" << bufferA[3] << bufferA[2] <<     bufferA[4] << endl << endl;
+		    else
+			    cout << "empty" << endl << endl;
+	    	cout << " _RS____________________________________________________" << endl;
+		    for (int i = 0; i < 2; ++i)
+			    cout << " |   " << "RS" << i << " |   " << setw(10) << mul[i][0] << "  |  " << setw(10) << mul[i][1] << "  |  " << setw(10) << mul[i][2] << "  |  " << endl;
+	    	cout << "--------------------------------------------------------" << endl;
+		    cout << "BUFFER:";
+			
+	    	if (countMul != 0)
+		    	cout << "(" << bufferM[1] << ")" << bufferM[3] << bufferM[2] << bufferM[4] << endl << endl;
+		    else
+		    	cout << "empty" << endl << endl;
+		    cout << " _ROB_________________________________________________________" << endl;
+	    	for (int i = 0; i < inputall.size(); ++i){
+			    cout<< " |   "  <<  "ROB" << i << " |   " << setw(10) << rob[i][0] << setw(10) << "  |  " << setw(10) << rob[i][1] << "  |  " <<     setw(10) << rob[i][2] << "  |  " << endl;
+		    }
+		    cout << "------------------------------------------------------------- -" << endl;
+		    cout << endl << endl;
+    	}	
+    } while (current < inputall.size() || emptyA || emptyM || countAdd || countMul || currentRob < inputall.size());
+}
+```
+> 歷盡千辛萬苦地排版，成就完美的輸出。  
+
+## 常見問題    
+- 輸入多餘的空格    
+- register必須由"F"+ 數字 構成    
+- 一直覺得期末有點低分，拜託了助教 ٩(๑❛ᴗ❛๑)۶  
