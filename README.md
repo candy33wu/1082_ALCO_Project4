@@ -540,4 +540,4 @@ if ((rob[currentRob][2] == "1")||!(current < inputall.size() || emptyA
 ## 常見問題    
 - 輸入多餘的空格    
 - register必須由"F"+ 數字 構成    
-- 一直覺得期末有點低分，拜託了助教 ٩(๑❛ᴗ❛๑)۶  
+ 
